@@ -13,9 +13,9 @@
     </stdio>
     <command><![CDATA[
 		#if $settings.version == "SOAPdenovo-127mer"
-          		./SOAPdenovo-127mer sparse_pregraph
+          		SOAPdenovo-127mer sparse_pregraph
        		#else 
-          		./SOAPdenovo-63mer sparse_pregraph
+          		SOAPdenovo-63mer sparse_pregraph
 		#end if
 
 		-s $config_file
