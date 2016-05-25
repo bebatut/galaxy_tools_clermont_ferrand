@@ -64,6 +64,10 @@
 	    <param name="genomeSize" value="5000"/>
             <param name="outputGraph" value="test"/>
 	    <param name="maxKmerEdgeLength" value="3"/>
+	    <param name="kmerFreqCutoff" value=""/>
+	    <param name="kmerEdgeFreqCutoff" value=""/>
+	    <param name="extraInfo" value=""/>
+	    <param name="runMode" value=""/>
 	    <output name="kmerFreq" file="test.kmerFreq"/>
 	    <output name="edge" file="test.edge"/>
 	    <output name="markOnEdge" file="test.markOnEdge"/>
