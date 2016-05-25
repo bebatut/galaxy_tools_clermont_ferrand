@@ -3,13 +3,21 @@
 	SOAPdenovo2 is a novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes.
 	sparse_pregraph
 	</description>
+	<macros>
+        	<import>soapdenovo_macros.xml</import>
+  	</macros>
+
+    <expand macro="requirements"/>
     <requirements>
     </requirements>
     <stdio>
-        <exit_code range="1:" />
     </stdio>
     <command><![CDATA[
-	./$version sparse_pregraph
+		#if $version==SOAPdenovo-127mer
+          		SOAPdenovo-127mer sparse_pregraph
+       		#else 
+          		SOAPdenovo-63mer sparse_pregraph
+		#end if
 		-s $config_file
 		-K $kmer
 		-g $maxKmerEdgeLength
@@ -64,10 +72,10 @@
 	    <param name="genomeSize" value="5000"/>
             <param name="outputGraph" value="test"/>
 	    <param name="maxKmerEdgeLength" value="3"/>
-	    <param name="kmerFreqCutoff" value=""/>
-	    <param name="kmerEdgeFreqCutoff" value=""/>
-	    <param name="extraInfo" value=""/>
-	    <param name="runMode" value=""/>
+	    <param name="kmerFreqCutoff" value="default"/>
+	    <param name="kmerEdgeFreqCutoff" value="default"/>
+	    <param name="extraInfo" value="default"/>
+	    <param name="runMode" value="default"/>
 	    <output name="kmerFreq" file="test.kmerFreq"/>
 	    <output name="edge" file="test.edge"/>
 	    <output name="markOnEdge" file="test.markOnEdge"/>
