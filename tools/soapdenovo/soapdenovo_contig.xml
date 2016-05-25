@@ -1,4 +1,5 @@
 <tool id="soapdenovo_contig" name="Contig" version="0.1.0">
+
     <description>with SOAPdenovo</description>
 
     <macros>
@@ -7,53 +8,66 @@
 
     <expand macro="requirements"/>
 
-    <stdio>
-        <exit_code range="1:" />
-    </stdio>
+    <stdio></stdio>
+
+    <version_command></version_command>
 
     <command><![CDATA[
-        cp $reads_info_file reads_info_file
+      `cp $reads_info_file reads_info_file`
 
-        & 
+      &&
 
-		    #if $select_tool==127
-          SOAPdenovo-127mer contig
-        #else 
+      #for $file in $graph_files
+        `cp $file.graph_file "graph_file"$file.graph_name`
+      #end for
+
+      &&
+
+      #if $max_kmer_size == "63"
           SOAPdenovo-63mer contig
+      #else
+          SOAPdenovo-127mer contig
+      #end if
+        -s $config_file
+        -o "outputGraph"
+
+        -g "graph_file"
+
+        $resolve_repeats 
+
+        #if $merge_level
+          -M $merge_level
         #end if
 
-          -g "$input1" 
+        #if $cov_cutoff
+          -D $cov_cutoff
+        #end if
 
-          $resolve_repeats 
+        #if $arc_weight
+          -e $arc_weight
+        #end if
 
-          #if $merge_level
-            -M $merge_level
-          #end if
-
-          #if $cov_cutoff
-            -D $cov_cutoff
-          #end if
-
-          #if $arc_weight
-            -e $arc_weight
-          #end if
-
-          #if $define_multi_kmer == "yes":
-            -m $define_multi_kmer.max_kmer
-            -s reads_info_file
-            -p \${GALAXY_SLOTS:-4}
-            -E $define_multi_kmer.merge_bubble
-          #end if
-        
-    ]]></command>
+        #if $define_multi_kmer == "true":
+          -m $define_multi_kmer.max_kmer
+          -s reads_info_file
+          -p \${GALAXY_SLOTS:-4}
+          -E $define_multi_kmer.merge_bubble
+        #end if
+]]>      
+    </command>
 
     <inputs>
-      <param type="data" name="input1" format="" />
+      <param name="max_kmer_size" label="Maximal kmer size" type="select" help="">
+            <option value="63" selected="True">63</option>
+            <option value="127">127</option>
+      </param>
 
-      <param name="select_tool" type="select" label="Select tool" help="Select kmer length algorithm optimization">
-  			<option value="127" selected="true">SOAPdenovo-127mer</option>
-  			<option value="63">SOAPdenovo-63mer</option>
-  		</param>
+      <param type="data" name="config_file" format="txt" label="Input configuration file" help="(-s)"/>
+
+      <repeat name="graph_files" title="Input graphs">
+        <param type="data" name="graph_file" format="txt" label="Input graph file" help="(-g)"/>
+        <param type="text" name="graph_name" label="Name of input graph" help=""/>
+      </repeat>
 
   		<param name="resolve_repeats" type="boolean" label="Resolve repeats" truevalue="-R" falsevalue="" help="Resolve repeats using information generated in pregraph step, works only if -R is set in pregraph step too (-R)" />
 
@@ -72,9 +86,9 @@
         <when value="true">
       		<param name="max_kmer" type="integer" label="max k when using multi-kmer" optional="True" help="max k when using multi-kmer, and the parameters below are used along with multi-kmer" />
 
-          <param type="data" name="reads_info_file" format="txt" label="Reads info file" optional="True" help="The file contains information of solexa reads(It's necessary when using multi-kmer)"/>
+          <param type="data" name="reads_info_file" format="txt" label="Reads info file" optional="True" help="The file contains information of solexa reads. (It's necessary when using multi-kmer)"/>
 
-      		<param name="merge_bubble" type="boolean" label="Merge clean bubble" truevalue="-E" falsevalue="" optional="True" help="Merge clean bubble before iterate, works only if -M is set when using multi-kmer" />
+      		<param name="merge_bubble" type="boolean" label="Merge clean bubble" truevalue="-E" falsevalue="" optional="True" help="Merge clean bubble before iterate, works only if -M is set when using multi-kmer"/>
         </when>
 
         <when value="false"/>
@@ -82,11 +96,14 @@
     </inputs>
 
     <outputs>
-  		<data format="txt" name="contigs" label="${tool.name} on ${on_string}: Contigs" from_work_dir="${input1}.contig"/>
-  		<data format="txt" name="arcs" label="${tool.name} on ${on_string}: Arcs"  from_work_dir="${input1}.Arc"/>
-  		<data format="txt" name="edges" label="${tool.name} on ${on_string}: Updated Edges" from_work_dir="${input1}.updated.edge" />
-  		<data format="txt" name="contigindex" label="${tool.name} on ${on_string}: Contig Index" from_work_dir="${input1}.ContigIndex" />
+  		<data format="txt" name="contigs" label="${tool.name} on ${on_string}: Contigs" from_work_dir="outputGraph.contig"/>
+  		<data format="txt" name="arcs" label="${tool.name} on ${on_string}: Arcs" from_work_dir="outputGraph.Arc"/>
+  		<data format="txt" name="edges" label="${tool.name} on ${on_string}: Updated Edges" from_work_dir="outputGraph.updated.edge" />
+  		<data format="txt" name="contigindex" label="${tool.name} on ${on_string}: Contig Index" from_work_dir="outputGraph.ContigIndex"/>
     </outputs>
+
+    <tests>
+    </tests>
 
     <expand macro="help"/>
     
