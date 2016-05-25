@@ -44,7 +44,7 @@
 		</when>
 	</conditional>
 	<param name="config_file" type="data" format="txt" label="Configuration file" help="(-s configFile)"/>
-	<param name="genomeSize" type="integer" label="genomeSize" help="(-z genomeSize)"/>
+	<param name="genomeSize" type="integer" label="genomeSize" value="5000" help="(-z genomeSize)"/>
 	<param name="maxKmerEdgeLength" type="integer" label="maxKmerEdgeLength" value="15" min="1" max="25" optional="TRUE" help="(-g maxKmerEdgeLength)"/>
 	<param name="kmerFreqCutoff" type="integer" label="kmerFreqCutoff" value="1" optional="TRUE" help="(-d kmerFreqCutoff)"/>
 	<param name="kmerEdgeFreqCutoff" type="integer" label="kmerEdgeFreqCutoff" optional="TRUE" value="1" help="(-e kmerEdgeFreqCutoff)"/>
