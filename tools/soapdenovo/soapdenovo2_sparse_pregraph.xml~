@@ -13,13 +13,12 @@
     <stdio>
     </stdio>
     <command><![CDATA[
-		#if $settings.version==SOAPdenovo-127mer
+		#if $version==SOAPdenovo-127mer
           		SOAPdenovo-127mer sparse_pregraph
        		#else 
           		SOAPdenovo-63mer sparse_pregraph
-		#end if
 		-s $config_file
-		-K $settings.kmer
+		-K $kmer
 		-g $maxKmerEdgeLength
 		-z $genomeSize
 		-d $kmerFreqCutoff
@@ -44,7 +43,7 @@
 		</when>
 	</conditional>
 	<param name="config_file" type="data" format="txt" label="Configuration file" help="(-s configFile)"/>
-	<param name="genomeSize" type="integer" label="genomeSize" value="5000" help="(-z genomeSize)"/>
+	<param name="genomeSize" type="integer" label="genomeSize" help="(-z genomeSize)"/>
 	<param name="maxKmerEdgeLength" type="integer" label="maxKmerEdgeLength" value="15" min="1" max="25" optional="TRUE" help="(-g maxKmerEdgeLength)"/>
 	<param name="kmerFreqCutoff" type="integer" label="kmerFreqCutoff" value="1" optional="TRUE" help="(-d kmerFreqCutoff)"/>
 	<param name="kmerEdgeFreqCutoff" type="integer" label="kmerEdgeFreqCutoff" optional="TRUE" value="1" help="(-e kmerEdgeFreqCutoff)"/>
@@ -67,20 +66,22 @@
     <tests>
         <test>
             <param name="version" value="SOAPdenovo-127mer"/>
-	    <param name="kmer" value="13"/>
+	    <param name="kmer" value="3"/>
 	    <param name="config_file" value="config_file"/>
 	    <param name="genomeSize" value="5000"/>
-            <param name="outputGraph" value="run_test"/>
+            <param name="outputGraph" value="test"/>
 	    <param name="maxKmerEdgeLength" value="3"/>
-	    <param name="kmerFreqCutoff" value="1"/>
-	    <param name="kmerEdgeFreqCutoff" value="1"/>
-	    <param name="extraInfo" value="FALSE"/>
-	    <param name="runMode" value="0"/>
-	    <output name="kmerFreq" file="run_test.kmerFreq"/>
-	    <output name="edge" file="run_test.edge"/>
-	    <output name="preArc" file="run_test.preArc"/>
-	    <output name="vertex" file="run_test.vertex"/>
-	    <output name="preGraphBasic" file="run_test.preGraphBasic"/>
+	    <param name="kmerFreqCutoff" value="default"/>
+	    <param name="kmerEdgeFreqCutoff" value="default"/>
+	    <param name="extraInfo" value="default"/>
+	    <param name="runMode" value="default"/>
+	    <output name="kmerFreq" file="test.kmerFreq"/>
+	    <output name="edge" file="test.edge"/>
+	    <output name="markOnEdge" file="test.markOnEdge"/>
+	    <output name="path" file="test.path"/>
+	    <output name="preArc" file="test.preArc"/>
+	    <output name="vertex" file="test.vertex"/>
+	    <output name="preGraphBasic" file="test.preGraphBasic"/>
         </test>
     </tests>
     <help><![CDATA[
