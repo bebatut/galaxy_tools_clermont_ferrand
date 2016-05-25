@@ -19,7 +19,27 @@
     </command>
 
     <inputs>
+        <conditional name="data_type">
+            <param name="data_type_test" type="select" label="Type of input files?" help="">
+                <option value="single" selected="true">Single-end</option>
+                <option value="paired">Paired-end</option>
+            </param>
+
+            <when value="single">
+               <param name="single_input_file" type="data" format="fasta,fastq,bam" label="Input file"/>
+            </when>
+
+            <when value="paired">
+                <param name="data_type_test" type="select" label="Type of input files?" help="">
+                    <option value="yes" selected="true">Single-end</option>
+                    <option value="no">Paired-end</option>
+                </param>
+            </when>
+        </conditional>
+
         <param name="max_rd_len" type="integer" value="100" label="Maximal read length" help="(max_rd_len)"/>
+
+
     </inputs>
 
     <outputs>
