@@ -60,7 +60,7 @@
         <test>
             <param name="version" value="SOAPdenovo-127mer"/>
 	    <param name="kmer" value="3"/>
-	    <param name="config_file" value="config_file"/>
+	    <param name="config_file" value="~/soapdenovo_wrapper/galaxy_tools_clermont_ferrand/tools/soapdenovo/test-data/config_file"/>
 	    <param name="genomeSize" value="5000"/>
             <param name="outputGraph" value="test"/>
 	    <param name="maxKmerEdgeLength" value="3"/>
